@@ -40,6 +40,29 @@ test('self closing tag', () => {
 	});
 });
 
+test.only('tag with line break', () => {
+	expect(parseRawTag('<div\n>', 1, 1, 0)).toMatchObject({
+		tagName: 'div',
+		attrs: [],
+		selfClosingSolidus: {
+			raw: '',
+		},
+		endSpace: {
+			raw: '\n',
+		},
+	});
+	expect(parseRawTag('<div\r\n>', 1, 1, 0)).toMatchObject({
+		tagName: 'div',
+		attrs: [],
+		selfClosingSolidus: {
+			raw: '',
+		},
+		endSpace: {
+			raw: '\r\n',
+		},
+	});
+});
+
 test('has attribute', () => {
 	expect(parseRawTag('<div a>', 1, 1, 0)).toMatchObject({
 		tagName: 'div',

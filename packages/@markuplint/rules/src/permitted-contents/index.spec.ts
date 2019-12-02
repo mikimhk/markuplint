@@ -646,4 +646,19 @@ describe('verify', () => {
 			},
 		]);
 	});
+
+	test('void element with line break', async () => {
+		const o = {
+			rules: {
+				'permitted-contents': {},
+			},
+		};
+		const r1 = await markuplint.verify('<div><img /></div>', o, [rule], 'en');
+		const r2 = await markuplint.verify('<div><img\n/></div>', o, [rule], 'en');
+		const r3 = await markuplint.verify('<div><img\r\n/></div>', o, [rule], 'en');
+
+		expect(r1).toStrictEqual([]);
+		expect(r2).toStrictEqual([]);
+		expect(r3).toStrictEqual([]);
+	});
 });

@@ -32,6 +32,8 @@ export default function parseRawTag(raw: string, nodeLine: number, nodeCol: numb
 		throw new SyntaxError(`Invalid tag name: "${tagName}" in <${tagWithAttrs}>`);
 	}
 
+	console.log({ raw, tagNameSplited });
+
 	const tagStartPos = tagWithAttrs.indexOf(tagName);
 	let rawAttrs = tagWithAttrs.substring(tagStartPos + tagName.length);
 
