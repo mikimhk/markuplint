@@ -23,6 +23,6 @@
 	"dependencies": {
 		"@markuplint/ml-core": "^1.0.0-alpha.17",
 		"axe-core": "^3.4.1",
-		"jsdom": "^15.2.1"
+		"jsdom": "^16.0.0"
 	}
 }

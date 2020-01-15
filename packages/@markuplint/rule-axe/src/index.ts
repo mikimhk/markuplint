@@ -1,7 +1,7 @@
 import { Result, createRule } from '@markuplint/ml-core';
-import { AxeResults } from 'axe-core';
+// import { AxeResults } from 'axe-core';
 import { JSDOM } from 'jsdom';
-import { runInContextOnFile } from './vm';
+// import { runInContextOnFile } from './vm';
 
 type Option = {};
 
@@ -21,9 +21,40 @@ export default createRule<boolean, Option>({
 		const html = mldoc.toString();
 		const { window } = new JSDOM(html);
 
-		const runner = await runInContextOnFile<() => Promise<AxeResults>>('../script.js', { window });
+		// const runner = await runInContextOnFile<() => Promise<AxeResults>>('../script.js', { window });
 
-		const results = await runner();
+		// const results = await runner();
+
+		// @ts-ignore
+		global.document = window.document;
+		// @ts-ignore
+		global.window = window;
+		// @ts-ignore
+		global.navigator = window.navigator;
+		// @ts-ignore
+		global.Node = window.Node;
+		// @ts-ignore
+		global.NodeList = window.NodeList;
+		// @ts-ignore
+		global.Element = window.Element;
+		// @ts-ignore
+		global.Document = window.Document;
+
+		const axe = await import('axe-core');
+
+		try {
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			const locale = require(`axe-core/locales/${'ja'}.json`);
+			axe.configure({ locale });
+		} catch (err) {
+			// ignore
+		}
+
+		const results = await axe.run({
+			rules: {
+				'color-contrast': { enabled: false },
+			},
+		});
 
 		for (const report of results.violations) {
 			if (report.impact === null) {
